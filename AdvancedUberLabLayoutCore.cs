@@ -23,7 +23,7 @@ namespace AdvancedUberLabLayout
     {
         private static readonly Regex labPageLinkCatch = new Regex(@"href=""(.*)"">.* LAB");
         private static readonly string poeLabLink = @"https://www.poelab.com/";
-        private static readonly string poeLabImagePrefix = @"https://www.poelab.com/wp-content/labfiles/";
+        private static readonly string poeLabImagePrefix = @"https://www.poelab.com/wp-content/";
 
         public override void AreaChange(AreaInstance area)
         {
@@ -221,10 +221,19 @@ namespace AdvancedUberLabLayout
 
                             using (StreamReader labPageReader = new StreamReader(labPageStream))
                             {
-                                Regex imageLinkCatch = new Regex($@"labfiles\/(.*{Settings.LabType.Value}\.jpg)"" data");
+                                Regex imageLinkCatch = new Regex($@"labfiles\/.*{Settings.LabType.Value}\.jpg");
                                 MatchCollection matches1 = imageLinkCatch.Matches(labPageReader.ReadToEnd());
-                                ImageUrl = poeLabImagePrefix + matches1[0].Groups[1].Value;
-                                FilePath = Path.Combine(ImagesDirectory, matches1[0].Groups[1].Value);
+
+                                foreach (Match match in matches1)
+                                {
+                                    if (match.Value.Length == 0)
+                                        continue;
+
+                                    ImageUrl = poeLabImagePrefix + match.Value;
+                                    FilePath = Path.Combine(ImagesDirectory, match.Value.Replace("labfiles/", ""));
+
+                                    break;
+                                }
                             }
 
                             break;
@@ -261,7 +270,6 @@ namespace AdvancedUberLabLayout
                     new Bitmap(downloadedImage); //Fix for exception (bitmap save problem https://stackoverflow.com/questions/5813633/a-generic-error-occurs-at-gdi-at-bitmap-save-after-using-savefiledialog )
 
                 downloadedImage = downloadedImage.Clone(new Rectangle(302, 111, ImageWidth, ImageHeight), downloadedImage.PixelFormat);
-
                 downloadedImage.Save(FilePath, ImageFormat.Jpeg);
                 Graphics.InitImage(FilePath, false);
                 ImageState = ImageCheckState.ReadyToDraw;
