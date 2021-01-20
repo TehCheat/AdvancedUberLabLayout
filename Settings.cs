@@ -38,5 +38,5 @@ public class Settings : ISettings
     public HotkeyNode ToggleDraw { get; set; }
     [Menu("Force Reload")]
     public HotkeyNode Reload { get; set; }
-    public ToggleNode Enable { get; set; } = new ToggleNode(true);
+    public ToggleNode Enable { get; set; } = new ToggleNode(false);
 }
