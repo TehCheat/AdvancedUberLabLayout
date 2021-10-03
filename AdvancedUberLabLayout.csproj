@@ -27,7 +27,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\..\PoEHelper\Plugins\Compiled\AdvancedUberLabLayout\</OutputPath>
+    <OutputPath>..\..\..\..\PoeHelper\Plugins\Compiled\AdvancedUberLabLayout\</OutputPath>
     <DefineConstants>
     </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
